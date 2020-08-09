@@ -25,6 +25,7 @@
 
 ((attr :intelligence) character)
 ;; => 10
+;;; Nice!
 
 ;; 2. Implement the comp function
 (defn my-comp [& fs]
@@ -36,6 +37,17 @@
 
 ((my-comp str +) 8 8 8)
 ;; => "24"
+
+;;; If you want to avoid having to handle the "zero case", you can use the
+;;; `identity` function. That also lets you handle the case where comp is called
+;;; with zero arguments, which the original `comp` allows:
+
+(let [f (comp)]
+  (f 3))
+;; => 3
+
+;;; I took a stab at it, but but it way down at the bottom of the file in case
+;;; you want to try for yourself first.
 
 ;; 3. Implement the assoc-in function. Hint: use the assoc function and define
 ;; its parameters as [m [k & ks] v].
@@ -50,6 +62,7 @@
 ;; => [{:name "James", :age {:gender "male", :gender1 "hello"}}
 ;;     {:name "John", :age 43}]
 
+;;; Looking good!
 
 ;; 4. Look up and use the update-in function.
 (update-in {:a {:b {:c 35}}} [:a :b :c] / 4 5)
@@ -69,8 +82,66 @@
 ;;     {:name "John", :age 43}
 ;;     {:details {:age 25/4}}]
 
+;;; Nice!
+
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
   (println "Hello, World!"))
+
+;;; My stab at comp below ↓
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(comment
+  (let [my-comp-2
+        (fn [& fns]
+          (reduce (fn [f g]
+                    (fn [& args]
+                      (f (apply g args))))
+                  identity
+                  fns))]
+    [((my-comp-2) 'initial-value)
+     ((my-comp-2 str +) 8 8 8)
+     ((my-comp-2 (partial + 1) (partial * 10)) 0)]
+    )
+  ;; => [initial-value "24" 1]
+  )
